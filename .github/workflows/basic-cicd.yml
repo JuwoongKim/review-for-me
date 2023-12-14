@@ -17,27 +17,43 @@ permissions:
   contents: read
 
 env:
+  RESOURCE_PATH: ./src/main/resources/application-dev.yml
+  JAVA_VERSION: 17
+  JAVA_DISTRIBUTION: 'temurin'
   PROJECT_NAME: review_service
   BUCKET_NAME: review-service-cicid-bucket
   CODE_DEPLOY_APP_NAME: review-cicd
   DEPLOYMENT_GROUP_NAME: review-instance
 
 jobs:
-  build:
+  build-deploy:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Set up JDK 17
       uses: actions/setup-java@v3
       with:
-        java-version: '17'
-        distribution: 'temurin'
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+        java-version: ${{ env.JAVA_VERSION }}
+        distribution: ${{ env.JAVA_DISTRIBUTION }}
+
+    - name: Set yml file
+      uses: microsoft/variable-substitution@v1
       with:
-        arguments: build
+        files: ${{ env.RESOURCE_PATH }}
+      env:
+        spring.datasource.url: ${{ secrets.MYSQL_DB_URL }}
+        spring.datasource.username: ${{ secrets.MYSQL_DB_NAME }}
+        spring.datasource.password: ${{ secrets.MYSQL_DB_PASSWORD }}
+
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+
+    - name: Build with gradle
+      run:  ./gradlew -Dspring.profiles.active=dev clean build
 
     - name: Make Zip File
       run: zip -qq -r ./$GITHUB_SHA.zip .
