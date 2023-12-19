@@ -32,7 +32,6 @@ public class Survey extends BaseEntity {
 	private String description;
 
 	@OneToMany(mappedBy = "survey", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
-	@Column(name = "questions")
 	private Map<Integer, Question> questions;
 
 	protected Survey() {
