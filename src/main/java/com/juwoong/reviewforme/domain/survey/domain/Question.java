@@ -2,57 +2,56 @@ package com.juwoong.reviewforme.domain.survey.domain;
 
 import java.util.List;
 
+import com.juwoong.reviewforme.domain.survey.domain.item.Item;
 import com.juwoong.reviewforme.global.entity.BaseEntity;
 
-import jakarta.persistence.CollectionTable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
+@Getter
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "questions")
-public abstract class Question extends BaseEntity {
+public class Question extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "question_id")
 	private Long id;
 
+	@Column(name = "title")
+	private String title;
+
+	@Column(name = "description")
+	private String description;
+
 	@ManyToOne
 	@JoinColumn(name = "survey_id")
 	private Survey survey;
 
-	@ElementCollection
-	@CollectionTable(name = "options", joinColumns = @JoinColumn(name = "question_id"))
-	private List<Option> options;
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@JoinColumn(name = "question_id")
+	private List<Item> items;
 
-	@ElementCollection
-	@CollectionTable(name = "answers", joinColumns = @JoinColumn(name = "question_id"))
-	private List<Answer> answers;
+	protected Question() {
 
-	public void makeOptions(List<Option> options) {
-		this.options = options;
 	}
 
-	public void makeAnswers(List<Answer> answers) {
-		this.answers = answers;
+	public Question(String title, String description, List<Item> items) {
+		this.title = title;
+		this.description = description;
+		this.items = items;
 	}
 
-	public List<Option> getOptions() {
-		return this.options;
+	public void setSurvey(Survey survey) {
+		this.survey = survey;
 	}
-
-	public List<Answer> getAnswers() {
-		return this.answers;
-	}
-
 }
