@@ -43,12 +43,7 @@ public class Survey extends BaseEntity {
 		this.questions = new HashMap<>();
 	}
 
-	public void makeQuestion(Integer number, Question question) {
-		questions.put(number, question);
+	public void makeQuestion(Integer order, Question question) {
+		questions.put(order, question);
 	}
-
-	public void deleteQuestion(Integer number) {
-		questions.remove(number);
-	}
-
 }
