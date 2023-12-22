@@ -2,6 +2,8 @@ package com.juwoong.reviewforme.domain.survey.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,14 @@ public class SurveyController {
 		SurveyResponse surveyResponse = new SurveyResponse(createdSurvey);
 
 		return new ResponseEntity<>(surveyResponse, HttpStatus.CREATED);
+	}
+
+	@GetMapping("/{survey-id}")
+	public ResponseEntity<SurveyResponse> getSurvey(@PathVariable("survey-id") Long surveyId) {
+		Survey survey = surveyService.getSurvey(surveyId);
+		SurveyResponse surveyResponse = new SurveyResponse(survey);
+
+		return new ResponseEntity<> (surveyResponse, HttpStatus.OK);
 	}
 
 	@PostMapping("/question")

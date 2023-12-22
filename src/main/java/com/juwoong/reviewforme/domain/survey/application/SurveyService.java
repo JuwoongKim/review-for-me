@@ -31,14 +31,19 @@ public class SurveyService {
 		return createdSurvey;
 	}
 
+	public Survey getSurvey(Long surveyId) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+
+		return survey;
+	}
+
 	@Transactional
 	public Question createQuestion(Long surveyId, Integer questionOrder, Question question) {
 		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
-		survey.makeQuestion(questionOrder,question);
+		survey.makeQuestion(questionOrder, question);
 		question.setSurvey(survey);
 
 		Question createdQuestion = questionRepository.save(question);
-
 
 		return createdQuestion;
 
