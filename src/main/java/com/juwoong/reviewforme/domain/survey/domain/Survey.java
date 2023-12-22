@@ -1,6 +1,8 @@
 package com.juwoong.reviewforme.domain.survey.domain;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.juwoong.reviewforme.global.entity.BaseEntity;
@@ -36,6 +38,10 @@ public class Survey extends BaseEntity {
 	@JoinColumn(name = "survey_id")
 	private Map<Integer, Question> questions;
 
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+	@JoinColumn(name = "survey_id")
+	private List<SurveyResult> surveyResults;
+
 	protected Survey() {
 	}
 
@@ -43,9 +49,20 @@ public class Survey extends BaseEntity {
 		this.title = title;
 		this.description = description;
 		this.questions = new HashMap<>();
+		this.surveyResults = new ArrayList<>();
 	}
 
 	public void makeQuestion(Integer order, Question question) {
 		questions.put(order, question);
+	}
+
+	public void receiveSurveyResult(SurveyResult surveyResult) {
+		surveyResults.add(surveyResult);
+	}
+
+	public SurveyResult getLastSurveyResult(){
+		int lastIndex = surveyResults.size() - 1;
+
+		return surveyResults.get(lastIndex);
 	}
 }
