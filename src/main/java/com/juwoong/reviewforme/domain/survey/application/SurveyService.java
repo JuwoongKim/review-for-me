@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.juwoong.reviewforme.domain.survey.domain.Question;
 import com.juwoong.reviewforme.domain.survey.domain.Survey;
+import com.juwoong.reviewforme.domain.survey.domain.SurveyResult;
 import com.juwoong.reviewforme.domain.survey.domain.repository.SurveyRepository;
 
 @Service
@@ -40,4 +41,16 @@ public class SurveyService {
 
 		return createdQuestion;
 	}
+
+	@Transactional
+	public SurveyResult receiveSurveyResult(Long surveyId, SurveyResult surveyResult) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+		survey.receiveSurveyResult(surveyResult);
+		Survey saveSurvey = surveyRepository.save(survey);
+
+		SurveyResult lastSurveyResult = saveSurvey.getLastSurveyResult();
+
+		return lastSurveyResult;
+	}
+
 }
