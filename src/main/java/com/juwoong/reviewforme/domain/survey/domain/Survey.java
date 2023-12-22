@@ -10,6 +10,7 @@ import com.juwoong.reviewforme.global.entity.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -60,9 +61,18 @@ public class Survey extends BaseEntity {
 		surveyResults.add(surveyResult);
 	}
 
-	public SurveyResult getLastSurveyResult(){
+	public SurveyResult getLastSurveyResult() {
 		int lastIndex = surveyResults.size() - 1;
 
 		return surveyResults.get(lastIndex);
+	}
+
+	public SurveyResult findSurveyResult(Long surveyResultId) {
+		SurveyResult selectedSurveyResult = surveyResults.stream()
+			.filter(surveyResult -> surveyResult.getId() == surveyResultId)
+			.findFirst()
+			.orElseThrow(() -> new EntityNotFoundException());
+
+		return selectedSurveyResult;
 	}
 }

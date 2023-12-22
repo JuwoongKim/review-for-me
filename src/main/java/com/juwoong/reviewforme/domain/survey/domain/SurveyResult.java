@@ -37,4 +37,8 @@ public class SurveyResult {
 	public SurveyResult(String reviewerName) {
 		this.reviewerName = reviewerName;
 	}
+
+	public void addAnwer(Answer answer) {
+		answers.add(answer);
+	}
 }

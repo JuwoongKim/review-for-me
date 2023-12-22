@@ -8,9 +8,17 @@ import lombok.Getter;
 @Embeddable
 public class Answer {
 
-	@Column(name = "item_id")
+	@Column(name = "fieldId_id")
 	private Long fieldId;
 
 	@Column(name = "content")
 	private String content;
+
+	protected Answer() {
+	}
+
+	public Answer(Long fieldId, String content) {
+		this.fieldId = fieldId;
+		this.content = content;
+	}
 }
