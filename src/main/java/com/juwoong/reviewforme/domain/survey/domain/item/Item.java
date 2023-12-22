@@ -72,8 +72,4 @@ public abstract class Item {
 	@ElementCollection
 	@CollectionTable(name = "options", joinColumns = @JoinColumn(name = "item_id"))
 	public List<Option> options = new ArrayList<>();
-
-	@ElementCollection
-	@CollectionTable(name = "answers", joinColumns = @JoinColumn(name = "item_id"))
-	public List<Answer> answers = new ArrayList<>();
 }
