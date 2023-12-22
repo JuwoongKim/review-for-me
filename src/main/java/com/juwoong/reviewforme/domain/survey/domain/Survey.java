@@ -67,12 +67,24 @@ public class Survey extends BaseEntity {
 		return surveyResults.get(lastIndex);
 	}
 
-	public SurveyResult findSurveyResult(Long surveyResultId) {
+	public SurveyResult getSurveyResult(Long surveyResultId) {
 		SurveyResult selectedSurveyResult = surveyResults.stream()
 			.filter(surveyResult -> surveyResult.getId() == surveyResultId)
 			.findFirst()
 			.orElseThrow(() -> new EntityNotFoundException());
 
 		return selectedSurveyResult;
+	}
+
+	public List<SurveyResult> getSurveyResults(Integer index, Integer size) {
+		Integer endIndex = (index + size <= surveyResults.size()) ? index + size : surveyResults.size();
+
+		if (index == endIndex) {
+			return new ArrayList<>();
+		}
+
+		List<SurveyResult> subSurveyResults = surveyResults.subList(index, endIndex);
+
+		return subSurveyResults;
 	}
 }
