@@ -14,7 +14,8 @@ public class ItemCheckBox extends Item implements Selective {
 	protected ItemCheckBox() {
 	}
 
-	public ItemCheckBox(String title, List<Option> options) {
+	public ItemCheckBox(Long id, String title, List<Option> options) {
+		this.id = id;
 		this.title = title;
 		this.options = options;
 	}

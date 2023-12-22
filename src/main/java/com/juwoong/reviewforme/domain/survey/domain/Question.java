@@ -12,7 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -33,11 +32,7 @@ public class Question extends BaseEntity {
 	@Column(name = "description")
 	private String description;
 
-	@ManyToOne
-	@JoinColumn(name = "survey_id")
-	private Survey survey;
-
-	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	@JoinColumn(name = "question_id")
 	private List<Item> items;
 
@@ -45,13 +40,10 @@ public class Question extends BaseEntity {
 
 	}
 
-	public Question(String title, String description, List<Item> items) {
+	public Question(Long id, String title, String description, List<Item> items) {
+		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.items = items;
-	}
-
-	public void setSurvey(Survey survey) {
-		this.survey = survey;
 	}
 }

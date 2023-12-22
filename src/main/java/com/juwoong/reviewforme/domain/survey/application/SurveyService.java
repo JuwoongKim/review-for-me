@@ -5,8 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.juwoong.reviewforme.domain.survey.domain.Question;
 import com.juwoong.reviewforme.domain.survey.domain.Survey;
-import com.juwoong.reviewforme.domain.survey.domain.repository.ItemRepository;
-import com.juwoong.reviewforme.domain.survey.domain.repository.QuestionRepository;
 import com.juwoong.reviewforme.domain.survey.domain.repository.SurveyRepository;
 
 @Service
@@ -14,14 +12,9 @@ import com.juwoong.reviewforme.domain.survey.domain.repository.SurveyRepository;
 public class SurveyService {
 
 	private final SurveyRepository surveyRepository;
-	private final QuestionRepository questionRepository;
-	private final ItemRepository itemRepository;
 
-	public SurveyService(SurveyRepository surveyRepository, QuestionRepository questionRepository,
-		ItemRepository itemRepository) {
+	public SurveyService(SurveyRepository surveyRepository) {
 		this.surveyRepository = surveyRepository;
-		this.questionRepository = questionRepository;
-		this.itemRepository = itemRepository;
 	}
 
 	@Transactional
@@ -31,17 +24,20 @@ public class SurveyService {
 		return createdSurvey;
 	}
 
+	public Survey getSurvey(Long surveyId) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+
+		return survey;
+	}
+
 	@Transactional
 	public Question createQuestion(Long surveyId, Integer questionOrder, Question question) {
 		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
-		survey.makeQuestion(questionOrder,question);
-		question.setSurvey(survey);
+		survey.makeQuestion(questionOrder, question);
+		Survey saveSurvey = surveyRepository.save(survey);
 
-		Question createdQuestion = questionRepository.save(question);
-
+		Question createdQuestion = saveSurvey.getQuestions().get(questionOrder);
 
 		return createdQuestion;
-
 	}
-
 }

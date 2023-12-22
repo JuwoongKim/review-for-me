@@ -14,7 +14,8 @@ public class ItemDropDown extends Item implements Selective {
 	protected ItemDropDown() {
 	}
 
-	public ItemDropDown(String title, List<Option> options) {
+	public ItemDropDown(Long id, String title, List<Option> options) {
+		this.id = id;
 		this.title = title;
 		this.options = options;
 	}

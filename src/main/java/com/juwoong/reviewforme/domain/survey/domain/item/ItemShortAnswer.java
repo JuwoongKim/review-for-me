@@ -14,7 +14,8 @@ public class ItemShortAnswer extends Item implements Subjective {
 	protected ItemShortAnswer() {
 	}
 
-	public ItemShortAnswer(String title, List<Option> options) {
+	public ItemShortAnswer(Long id, String title, List<Option> options) {
+		this.id = id;
 		this.title = title;
 		this.options = options;
 	}
