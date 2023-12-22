@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.juwoong.reviewforme.domain.survey.api.dto.CreateAnswerRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.CreateQuestionRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.CreateSurveyRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.CreateSurveyResultRequest;
@@ -17,6 +18,7 @@ import com.juwoong.reviewforme.domain.survey.api.dto.QuestionResponse;
 import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResponse;
 import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultResponse;
 import com.juwoong.reviewforme.domain.survey.application.SurveyService;
+import com.juwoong.reviewforme.domain.survey.domain.Answer;
 import com.juwoong.reviewforme.domain.survey.domain.Question;
 import com.juwoong.reviewforme.domain.survey.domain.Survey;
 import com.juwoong.reviewforme.domain.survey.domain.SurveyResult;
@@ -74,6 +76,20 @@ public class SurveyController {
 		SurveyResult createdSurveyResult = surveyService.receiveSurveyResult(surveyId, surveyResult);
 
 		SurveyResultResponse surveyResultResponse = new SurveyResultResponse(createdSurveyResult);
+
+		return new ResponseEntity<>(surveyResultResponse, HttpStatus.CREATED);
+	}
+
+	@PostMapping("/surveyResult/answer")
+	public ResponseEntity<SurveyResultResponse> receiveAnswer(
+		@RequestParam("survey-id") Long surveyId,
+		@RequestParam("survey-result-id") Long surveyResultId,
+		@RequestBody CreateAnswerRequest createAnswerRequest
+	) {
+		Answer answer = createAnswerRequest.toValue();
+		SurveyResult updatedSurveyResult = surveyService.receiveAnswer(surveyId, surveyResultId, answer);
+
+		SurveyResultResponse surveyResultResponse = new SurveyResultResponse(updatedSurveyResult);
 
 		return new ResponseEntity<>(surveyResultResponse, HttpStatus.OK);
 	}
