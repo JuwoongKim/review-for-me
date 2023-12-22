@@ -32,39 +32,39 @@ public abstract class Item {
 
 		SHORT_ANSWER() {
 			@Override
-			public Item create(String title, List<Option> options) {
-				return new ItemShortAnswer(title, options);
+			public Item create(Long id, String title, List<Option> options) {
+				return new ItemShortAnswer(id, title, options);
 			}
 		}, PARAGRAPH() {
 			@Override
-			public Item create(String title, List<Option> options) {
-				return new ItemParagraph(title, options);
+			public Item create(Long id, String title, List<Option> options) {
+				return new ItemParagraph(id, title, options);
 			}
 		}, CHECKBOX() {
 			@Override
-			public Item create(String title, List<Option> options) {
-				return new ItemCheckBox(title, options);
+			public Item create(Long id, String title, List<Option> options) {
+				return new ItemCheckBox(id, title, options);
 			}
 		}, DROPDOWN() {
 			@Override
-			public Item create(String title, List<Option> options) {
-				return new ItemDropDown(title, options);
+			public Item create(Long id, String title, List<Option> options) {
+				return new ItemDropDown(id, title, options);
 			}
 		}, MULTIPLE_CHOICE() {
 			@Override
-			public Item create(String title, List<Option> options) {
-				return new ItemMultipleChoice(title, options);
+			public Item create(Long id, String title, List<Option> options) {
+				return new ItemMultipleChoice(id, title, options);
 			}
 		};
 
-		public abstract Item create(String title, List<Option> options);
+		public abstract Item create(Long id, String title, List<Option> options);
 
 	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "item_id")
-	private Long id;
+	public Long id;
 
 	@Column(name = "item_title")
 	public String title;
@@ -76,5 +76,4 @@ public abstract class Item {
 	@ElementCollection
 	@CollectionTable(name = "answers", joinColumns = @JoinColumn(name = "item_id"))
 	public List<Answer> answers = new ArrayList<>();
-
 }

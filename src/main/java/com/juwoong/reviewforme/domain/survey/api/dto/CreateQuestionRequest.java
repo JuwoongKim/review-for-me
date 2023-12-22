@@ -6,6 +6,7 @@ import com.juwoong.reviewforme.domain.survey.domain.Question;
 import com.juwoong.reviewforme.domain.survey.domain.item.Item;
 
 public record CreateQuestionRequest(
+	Long questionId,
 	Integer questionOrder,
 	String questionTitle,
 	String questionDescription,
@@ -14,6 +15,6 @@ public record CreateQuestionRequest(
 	public Question toEntity() {
 		List<Item> items = questionItems.stream().map(request -> request.toEntity()).toList();
 
-		return new Question(questionTitle, questionDescription, items);
+		return new Question(questionId, questionTitle, questionDescription, items);
 	}
 }

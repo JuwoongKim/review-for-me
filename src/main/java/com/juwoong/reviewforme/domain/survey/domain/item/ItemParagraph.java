@@ -14,7 +14,8 @@ public class ItemParagraph extends Item implements Subjective {
 	protected ItemParagraph() {
 	}
 
-	public ItemParagraph(String title, List<Option> options) {
+	public ItemParagraph(Long id, String title, List<Option> options) {
+		this.id = id;
 		this.title = title;
 		this.options = options;
 	}

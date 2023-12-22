@@ -6,6 +6,7 @@ import com.juwoong.reviewforme.domain.survey.domain.item.Item;
 import com.juwoong.reviewforme.domain.survey.domain.Option;
 
 public record CreateItemRequest(
+	Long itemId,
 	String itemTitle,
 	Item.ItemType itemType,
 	List<CreateOptionRequest> itemOptions
@@ -13,6 +14,6 @@ public record CreateItemRequest(
 	public Item toEntity() {
 		List<Option> options = itemOptions.stream().map(request -> request.toValue()).toList();
 
-		return itemType.create(this.itemTitle, options);
+		return itemType.create(this.itemId, this.itemTitle, options);
 	}
 }

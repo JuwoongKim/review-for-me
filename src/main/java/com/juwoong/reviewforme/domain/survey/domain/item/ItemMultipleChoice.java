@@ -14,7 +14,8 @@ public class ItemMultipleChoice extends Item implements Selective {
 	protected ItemMultipleChoice() {
 	}
 
-	public ItemMultipleChoice(String title, List<Option> options) {
+	public ItemMultipleChoice(Long id, String title, List<Option> options) {
+		this.id = id;
 		this.title = title;
 		this.options = options;
 	}
