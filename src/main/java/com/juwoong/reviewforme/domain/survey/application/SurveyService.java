@@ -3,8 +3,10 @@ package com.juwoong.reviewforme.domain.survey.application;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.juwoong.reviewforme.domain.survey.domain.Answer;
 import com.juwoong.reviewforme.domain.survey.domain.Question;
 import com.juwoong.reviewforme.domain.survey.domain.Survey;
+import com.juwoong.reviewforme.domain.survey.domain.SurveyResult;
 import com.juwoong.reviewforme.domain.survey.domain.repository.SurveyRepository;
 
 @Service
@@ -39,5 +41,28 @@ public class SurveyService {
 		Question createdQuestion = saveSurvey.getQuestions().get(questionOrder);
 
 		return createdQuestion;
+	}
+
+	@Transactional
+	public SurveyResult receiveSurveyResult(Long surveyId, SurveyResult surveyResult) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+		survey.receiveSurveyResult(surveyResult);
+		Survey saveSurvey = surveyRepository.save(survey);
+
+		SurveyResult lastSurveyResult = saveSurvey.getLastSurveyResult();
+
+		return lastSurveyResult;
+	}
+
+	@Transactional
+	public SurveyResult receiveAnswer(Long surveyId, Long surveyResultId, Answer answer) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+		SurveyResult surveyResult = survey.findSurveyResult(surveyResultId);
+		surveyResult.addAnwer(answer);
+
+		Survey savedSurvey = surveyRepository.save(survey);
+		SurveyResult savedSurveyResult = savedSurvey.findSurveyResult(surveyResultId);
+
+		return savedSurveyResult;
 	}
 }

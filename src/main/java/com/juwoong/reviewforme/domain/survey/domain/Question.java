@@ -2,7 +2,7 @@ package com.juwoong.reviewforme.domain.survey.domain;
 
 import java.util.List;
 
-import com.juwoong.reviewforme.domain.survey.domain.item.Item;
+import com.juwoong.reviewforme.domain.survey.domain.field.Field;
 import com.juwoong.reviewforme.global.entity.BaseEntity;
 
 import jakarta.persistence.CascadeType;
@@ -34,16 +34,16 @@ public class Question extends BaseEntity {
 
 	@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
 	@JoinColumn(name = "question_id")
-	private List<Item> items;
+	private List<Field> fields;
 
 	protected Question() {
 
 	}
 
-	public Question(Long id, String title, String description, List<Item> items) {
+	public Question(Long id, String title, String description, List<Field> fields) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
-		this.items = items;
+		this.fields = fields;
 	}
 }

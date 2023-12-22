@@ -1,4 +1,4 @@
-package com.juwoong.reviewforme.domain.survey.domain.item;
+package com.juwoong.reviewforme.domain.survey.domain.field;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "multiple_choices")
-public class ItemMultipleChoice extends Item implements Selective {
+public class FieldMultipleChoice extends Field implements Selective {
 
-	protected ItemMultipleChoice() {
+	protected FieldMultipleChoice() {
 	}
 
-	public ItemMultipleChoice(Long id, String title, List<Option> options) {
+	public FieldMultipleChoice(Long id, String title, List<Option> options) {
 		this.id = id;
 		this.title = title;
 		this.options = options;

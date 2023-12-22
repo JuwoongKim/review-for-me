@@ -3,18 +3,18 @@ package com.juwoong.reviewforme.domain.survey.api.dto;
 import java.util.List;
 
 import com.juwoong.reviewforme.domain.survey.domain.Option;
-import com.juwoong.reviewforme.domain.survey.domain.item.Item;
+import com.juwoong.reviewforme.domain.survey.domain.field.Field;
 
-public record ItemResponse(
+public record FieldResponse(
 	Long id,
 	String title,
 	List<Option> options
 ) {
-	public ItemResponse(Item item) {
+	public FieldResponse(Field field) {
 		this(
-			item.getId(),
-			item.getTitle(),
-			item.getOptions()
+			field.getId(),
+			field.getTitle(),
+			field.getOptions()
 		);
 	}
 }
