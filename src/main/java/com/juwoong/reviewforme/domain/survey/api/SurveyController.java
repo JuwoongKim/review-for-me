@@ -1,5 +1,7 @@
 package com.juwoong.reviewforme.domain.survey.api;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,7 @@ import com.juwoong.reviewforme.domain.survey.api.dto.CreateSurveyRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.CreateSurveyResultRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.QuestionResponse;
 import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResponse;
+import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultPageResponse;
 import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultResponse;
 import com.juwoong.reviewforme.domain.survey.application.SurveyService;
 import com.juwoong.reviewforme.domain.survey.domain.Answer;
@@ -78,6 +81,28 @@ public class SurveyController {
 		SurveyResultResponse surveyResultResponse = new SurveyResultResponse(createdSurveyResult);
 
 		return new ResponseEntity<>(surveyResultResponse, HttpStatus.CREATED);
+	}
+
+	@GetMapping("/surveyResult")
+	public ResponseEntity<SurveyResultPageResponse> getSurveyResults(
+		@RequestParam("survey-id") Long surveyId,
+		@RequestParam(defaultValue = "0") Integer index,
+		@RequestParam(defaultValue = "12") Integer size
+	) {
+		List<SurveyResult> surveyResults = surveyService.getSurveyResults(surveyId, index, size);
+		boolean hasNext = surveyResults.size() == size;
+
+		List<SurveyResultResponse> SurveyResultResponses = surveyResults.stream()
+			.map(surveyResult -> new SurveyResultResponse(surveyResult))
+			.toList();
+
+		SurveyResultPageResponse surveyResultPageResponse = new SurveyResultPageResponse(
+			SurveyResultResponses,
+			index + size - 1,
+			hasNext
+		);
+
+		return new ResponseEntity<>(surveyResultPageResponse, HttpStatus.OK);
 	}
 
 	@PostMapping("/surveyResult/answer")

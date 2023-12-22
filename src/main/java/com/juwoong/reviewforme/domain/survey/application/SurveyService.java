@@ -1,5 +1,7 @@
 package com.juwoong.reviewforme.domain.survey.application;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,14 +56,21 @@ public class SurveyService {
 		return lastSurveyResult;
 	}
 
+	public List<SurveyResult> getSurveyResults(Long surveyId, Integer index, Integer size) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+		List<SurveyResult> surveyResults = survey.getSurveyResults(index, size);
+
+		return surveyResults;
+	}
+
 	@Transactional
 	public SurveyResult receiveAnswer(Long surveyId, Long surveyResultId, Answer answer) {
 		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
-		SurveyResult surveyResult = survey.findSurveyResult(surveyResultId);
+		SurveyResult surveyResult = survey.getSurveyResult(surveyResultId);
 		surveyResult.addAnwer(answer);
 
 		Survey savedSurvey = surveyRepository.save(survey);
-		SurveyResult savedSurveyResult = savedSurvey.findSurveyResult(surveyResultId);
+		SurveyResult savedSurveyResult = savedSurvey.getSurveyResult(surveyResultId);
 
 		return savedSurveyResult;
 	}
