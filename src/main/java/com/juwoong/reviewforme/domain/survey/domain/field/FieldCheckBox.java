@@ -1,4 +1,4 @@
-package com.juwoong.reviewforme.domain.survey.domain.item;
+package com.juwoong.reviewforme.domain.survey.domain.field;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "check_boxs")
-public class ItemCheckBox extends Item implements Selective {
+public class FieldCheckBox extends Field implements Selective {
 
-	protected ItemCheckBox() {
+	protected FieldCheckBox() {
 	}
 
-	public ItemCheckBox(Long id, String title, List<Option> options) {
+	public FieldCheckBox(Long id, String title, List<Option> options) {
 		this.id = id;
 		this.title = title;
 		this.options = options;

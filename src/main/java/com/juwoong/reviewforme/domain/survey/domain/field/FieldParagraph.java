@@ -1,4 +1,4 @@
-package com.juwoong.reviewforme.domain.survey.domain.item;
+package com.juwoong.reviewforme.domain.survey.domain.field;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "paragraphs")
-public class ItemParagraph extends Item implements Subjective {
+public class FieldParagraph extends Field implements Subjective {
 
-	protected ItemParagraph() {
+	protected FieldParagraph() {
 	}
 
-	public ItemParagraph(Long id, String title, List<Option> options) {
+	public FieldParagraph(Long id, String title, List<Option> options) {
 		this.id = id;
 		this.title = title;
 		this.options = options;
