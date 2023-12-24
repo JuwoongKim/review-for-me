@@ -63,6 +63,13 @@ public class SurveyService {
 		return surveyResults;
 	}
 
+	public List<SurveyResult.ByField> getSurveyResultByField(Long surveyId, Long fieldId) {
+		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
+		List<SurveyResult.ByField> surveyResultByFields = survey.getSurveyResultByFields(fieldId);
+
+		return surveyResultByFields;
+	}
+
 	@Transactional
 	public SurveyResult receiveAnswer(Long surveyId, Long surveyResultId, Answer answer) {
 		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
