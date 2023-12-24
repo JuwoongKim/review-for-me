@@ -18,7 +18,8 @@ import com.juwoong.reviewforme.domain.survey.api.dto.CreateSurveyRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.CreateSurveyResultRequest;
 import com.juwoong.reviewforme.domain.survey.api.dto.QuestionResponse;
 import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResponse;
-import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultByReviewerResponse;
+import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultByFieldResponse;
+import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultByReviewerPagingResponse;
 import com.juwoong.reviewforme.domain.survey.api.dto.SurveyResultResponse;
 import com.juwoong.reviewforme.domain.survey.application.SurveyService;
 import com.juwoong.reviewforme.domain.survey.domain.Answer;
@@ -84,7 +85,7 @@ public class SurveyController {
 	}
 
 	@GetMapping("/surveyResult")
-	public ResponseEntity<SurveyResultByReviewerResponse> getSurveyResultsByReviewer(
+	public ResponseEntity<SurveyResultByReviewerPagingResponse> getSurveyResultsByReviewer(
 		@RequestParam("survey-id") Long surveyId,
 		@RequestParam(defaultValue = "0") Integer index,
 		@RequestParam(defaultValue = "12") Integer size
@@ -96,13 +97,27 @@ public class SurveyController {
 			.map(surveyResult -> new SurveyResultResponse(surveyResult))
 			.toList();
 
-		SurveyResultByReviewerResponse surveyResultPageResponse = new SurveyResultByReviewerResponse(
+		SurveyResultByReviewerPagingResponse surveyResultPageResponse = new SurveyResultByReviewerPagingResponse(
 			SurveyResultResponses,
 			index + size - 1,
 			hasNext
 		);
 
 		return new ResponseEntity<>(surveyResultPageResponse, HttpStatus.OK);
+	}
+
+	@GetMapping("/surveyResult/field")
+	public List<SurveyResultByFieldResponse> getSurveyResultsByField(
+		@RequestParam("survey-id") Long surveyId,
+		@RequestParam("field-id") Long fieldId
+	) {
+		List<SurveyResult.ByField> surveyResultByFields = surveyService.getSurveyResultByField(surveyId, fieldId);
+
+		List<SurveyResultByFieldResponse> surveyResultByFieldResponse = surveyResultByFields.stream()
+			.map(surveyResultByField -> new SurveyResultByFieldResponse(surveyResultByField))
+			.toList();
+
+		return surveyResultByFieldResponse;
 	}
 
 	@PostMapping("/surveyResult/answer")
