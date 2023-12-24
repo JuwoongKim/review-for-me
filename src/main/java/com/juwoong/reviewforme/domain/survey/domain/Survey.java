@@ -87,4 +87,12 @@ public class Survey extends BaseEntity {
 
 		return subSurveyResults;
 	}
+
+	public List<SurveyResult.ByField> getSurveyResultByFields(Long fieldId) {
+		List<SurveyResult.ByField> surveyResultByFields = surveyResults.stream()
+			.map(surveyResult -> surveyResult.getSurveyResultByField(fieldId))
+			.toList();
+
+		return surveyResultByFields;
+	}
 }

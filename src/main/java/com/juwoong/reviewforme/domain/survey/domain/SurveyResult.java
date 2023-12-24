@@ -19,6 +19,19 @@ import lombok.Getter;
 @Table(name = "survey_results")
 public class SurveyResult {
 
+	@Getter
+	public static class ByField {
+		private Long fieldId;
+		private String reviewerName;
+		private String content;
+
+		public ByField(Long fieldId, String reviewerName, String content) {
+			this.fieldId = fieldId;
+			this.reviewerName = reviewerName;
+			this.content = content;
+		}
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "survey_result_id")
@@ -38,7 +51,17 @@ public class SurveyResult {
 		this.reviewerName = reviewerName;
 	}
 
-	public void addAnwer(Answer answer) {
+	public void addAnswer(Answer answer) {
 		answers.add(answer);
+	}
+
+	public ByField getSurveyResultByField(Long fieldId) {
+		ByField surveyResultByField = answers.stream()
+			.filter(answer -> answer.getFieldId() == fieldId)
+			.findFirst()
+			.map(answer -> new ByField(answer.getFieldId(), reviewerName, answer.getContent()))
+			.orElseThrow(() -> new RuntimeException());
+
+		return surveyResultByField;
 	}
 }
