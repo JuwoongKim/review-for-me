@@ -7,11 +7,13 @@ import com.juwoong.reviewforme.domain.survey.domain.SurveyResult;
 
 public record SurveyResultResponse(
 	Long surveyResultId,
+	String reviewerName,
 	List<AnswerResponse> answerResponses
 ) {
 	public SurveyResultResponse(SurveyResult surveyResult) {
 		this(
 			surveyResult.getId(),
+			surveyResult.getReviewerName(),
 			change(surveyResult.getAnswers())
 		);
 	}

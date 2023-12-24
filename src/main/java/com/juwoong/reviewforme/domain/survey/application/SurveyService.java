@@ -56,7 +56,7 @@ public class SurveyService {
 		return lastSurveyResult;
 	}
 
-	public List<SurveyResult> getSurveyResults(Long surveyId, Integer index, Integer size) {
+	public List<SurveyResult> getSurveyResultsByReviewer(Long surveyId, Integer index, Integer size) {
 		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
 		List<SurveyResult> surveyResults = survey.getSurveyResults(index, size);
 
@@ -67,7 +67,7 @@ public class SurveyService {
 	public SurveyResult receiveAnswer(Long surveyId, Long surveyResultId, Answer answer) {
 		Survey survey = surveyRepository.findById(surveyId).orElseThrow(() -> new RuntimeException());
 		SurveyResult surveyResult = survey.getSurveyResult(surveyResultId);
-		surveyResult.addAnwer(answer);
+		surveyResult.addAnswer(answer);
 
 		Survey savedSurvey = surveyRepository.save(survey);
 		SurveyResult savedSurveyResult = savedSurvey.getSurveyResult(surveyResultId);
